@@ -7,7 +7,7 @@ let tipoConsumo;
 let estadoPedido;
 
 //Encabezado
-console.log("===SISTEMA DE GESTIÓN DE PEDIDOS - CAFÉBYTE===");
+alert("===SISTEMA DE GESTIÓN DE PEDIDOS - CAFÉBYTE===");
 
 let opcion; // Declarar la variable opción aquí para que esté disponible en el bucle
 
