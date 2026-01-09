@@ -36,5 +36,9 @@ do {
 } while (opcion !== "5");
 
 function crearUsuario() {
-    
+   const nombre = prompt("Ingrese nombre de usuario: ")
+   
+   if (usuarios[nombre]) {
+    alert("")
+   }
 }
