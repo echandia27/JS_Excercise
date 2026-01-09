@@ -1,0 +1,21 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.task {
+    border-left: 5px solid;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.task.alta {
+    border-color: #dc3545;
+}
+
+.task.media {
+    border-color: #ffc107;
+}
+
+.task.baja {
+    border-color: #198754;
+}
