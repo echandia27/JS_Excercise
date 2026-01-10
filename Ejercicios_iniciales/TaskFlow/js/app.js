@@ -62,13 +62,43 @@ function renderTasks () {
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task", task.priority);
 
+        if (task.status === "completada") {
+            taskDiv.classList.add("opacity-50");
+        }
+
         taskDiv.innerHTML = `
         <h5>${task.title}</h5>
         <p>${task.description}</p>
-        <span class="badge bg-secondary">${task.status}</span>
+        <select class="form-select mb-2">
+            <option value="pendiente" ${task.status === "pendiente" ? "selected" : ""}>Pendiente</option>
+            <option value="proceso" ${task.status === "proceso" ? "selected" : ""}>En proceso</option>
+            <option value="completada" ${task.status === "completada" ? "selected" : ""}>Completada</option>
+            </select>
+
+            <button class="btn btn-danger btn-sm">Eliminar</button>
         `;
+
+        // Cambio de estado
+        const statusSelect = taskDiv.querySelector("select");
+
+        statusSelect.addEventListener("change", (e) => {
+            task.status=e.target.value;
+            renderTasks();
+        });
+
+        // Eliminar tarea
+        const deleteBtn = taskDiv.querySelector("button");
+        deleteBtn.addEventListener("click", () => {
+            deleteTask(task.id);
+        });
 
         taskList.appendChild(taskDiv);
     });
+}
+
+function deleteTask(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    renderTasks();
+    showMessage("Tarea eliminada", "info");
 }
 
