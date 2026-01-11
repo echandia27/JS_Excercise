@@ -1,4 +1,6 @@
 let tasks = [];
+let currentStatusFilter = "all";
+let currentPriorityFilter = "all";
 
 const taskForm = document.getElementById("task-form");
 taskForm.addEventListener("submit", handleSubmit);
@@ -58,7 +60,21 @@ const taskList = document.getElementById("task-list");
 function renderTasks () {
     taskList.innerHTML = "";
 
-    tasks.forEach(task => {
+    let filteredTasks =tasks;
+
+    if (currentStatusFilter !== "all") {
+        filteredTasks = filteredTasks.filter(
+            task => task.status === currentStatusFilter
+        );
+    }
+
+    if (currentPriorityFilter !== "all") {
+        filteredTasks = filteredTasks.filter(
+            task => task.priority === currentPriorityFilter
+        );
+    }
+
+    filteredTasks.forEach(task => {
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task", task.priority);
 
@@ -101,4 +117,20 @@ function deleteTask(id) {
     renderTasks();
     showMessage("Tarea eliminada", "info");
 }
+
+const filterButtons = document.querySelectorAll("[data-filter]");
+
+filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        currentStatusFilter = button.dataset.filter;
+        renderTasks();
+    });
+});
+
+const priorityFilter = document.getElementById("priority-filter");
+
+priorityFilter.addEventListener("change", (e) => {
+    currentPriorityFilter = e.target.value;
+    renderTasks();
+});
 

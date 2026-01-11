@@ -9,37 +9,53 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">TaskFlow</h1>
+    <h1 class="text-center mb-4">TaskFlow</h1>
 
-        <!-- Formulario de tareas -->
-        <form id="task-form" class="card p-3 mb-4">
-            <div class="mb-3">
-                <label class="form-label">Título</label>
-                <input type="text" id="title" class="form-control">
+    <div class="mb-4 d-flex gap-2 flex-wrap">
+        <button class="btn btn-outline-primary" data-filter="all">Todas</button>
+        <button class="btn btn-outline-secondary" data-filter="pendiente">Pendientes</button>
+        <button class="btn btn-outline-warning" data-filter="proceso">En proceso</button>
+        <button class="btn btn-outline-success" data-filter="completada">Completadas</button>
+    
+        <select class="form-select w-auto" id="priority-filter">
+            <option value="all">Todas las prioridades</option>
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+        </select>
+    </div>
+
+    <!-- Formulario de tareas -->
+    <form id="task-form" class="card p-3 mb-4">
+        <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" id="title" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea id="description" class="form-control"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label d-block">Prioridad</label>
+
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="priority" id="priority-high" value="alta">
+                <label class="form-check-label" for="priority-high">Alta</label>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <textarea id="description" class="form-control"></textarea>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="priority" id="priority-medium" value="media">
+                <label class="form-check-label" for="priority-medium">Media</label>
             </div>
 
-            <div class="mb-3">
-                <label class="form-label d-block">Prioridad</label>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="priority" id="priority-low" value="baja">
+                <label class="form-check-label" for="priority-low">Baja</label>
+        </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="priority" id="priority-high" value="alta">
-                    <label class="form-check-label" for="priority-high">Alta</label>
-                </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="priority" id="priority-medium" value="media">
-                    <label class="form-check-label" for="priority-medium">Media</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="priority" id="priority-low" value="baja">
-                    <label class="form-check-label" for="priority-low">Baja</label>
-            </div>
 </div>
 
 
