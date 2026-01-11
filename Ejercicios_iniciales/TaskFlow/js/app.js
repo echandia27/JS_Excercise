@@ -29,7 +29,9 @@ function handleSubmit(e) {
     };
 
     tasks.push(task);
+    saveTasks();
     renderTasks();
+    updateCounters();
 
     showMessage("Tarea creada correctamente", "success");
 
@@ -83,8 +85,17 @@ function renderTasks () {
         }
 
         taskDiv.innerHTML = `
-        <h5>${task.title}</h5>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class=mb-0>${task.title}</h5>
+        ${getPriorityBadge(task.priority)}
+        </div>
+
         <p>${task.description}</p>
+
+        <div class="mb-2">
+            ${getStatusBadge(task.status)}
+        </div>
+
         <select class="form-select mb-2">
             <option value="pendiente" ${task.status === "pendiente" ? "selected" : ""}>Pendiente</option>
             <option value="proceso" ${task.status === "proceso" ? "selected" : ""}>En proceso</option>
@@ -99,7 +110,9 @@ function renderTasks () {
 
         statusSelect.addEventListener("change", (e) => {
             task.status=e.target.value;
+            saveTasks();
             renderTasks();
+            updateCounters();
         });
 
         // Eliminar tarea
@@ -112,9 +125,43 @@ function renderTasks () {
     });
 }
 
+function getPriorityBadge(priority) {
+    switch (priority) {
+        case "alta":
+            return `<span class="badge bg-danger">Alta</span>`;
+        case "media":
+            return `<span class="badge bg-warning text-dark">Media</span>`;
+        case "baja":
+            return `<span class= "badge bg-success">Baja</span>`;
+        default:
+            return "";
+    }
+}
+
+function getStatusBadge(status) {
+    switch (status) {
+        case "pendiente":
+            return `<span class="badge bg-secondary">Pendiente</span>`;
+        case "proceso":
+            return `<span class="badge bg-info text-dark">En proceso</span>`;
+        case "completada":
+            return `<span class="badge bg-success">Completada</span>`;
+        default:
+            return "";
+    }
+}
+
 function deleteTask(id) {
+    const confirmDelete = confirm("Estás seguro de eliminar esta tarea?");
+
+    if (!confirmDelete) {
+        return;
+    }
+
     tasks = tasks.filter(task => task.id !== id);
+    saveTasks();
     renderTasks();
+    updateCounters();
     showMessage("Tarea eliminada", "info");
 }
 
@@ -134,3 +181,31 @@ priorityFilter.addEventListener("change", (e) => {
     renderTasks();
 });
 
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function loadTasks() {
+    const storedTasks = localStorage.getItem("tasks");
+
+    if(storedTasks) {
+        tasks = JSON.parse(storedTasks);
+        renderTasks();
+        updateCounters();
+    }
+}
+
+loadTasks();
+
+function updateCounters() {
+    document.getElementById("count-all").textContent=tasks.length;
+
+document.getElementById("count-pendiente").textContent=
+    tasks.filter(task => task.status === "pendiente").length;
+
+document.getElementById("count-proceso").textContent=
+    tasks.filter(task => task.status === "proceso").length;
+
+document.getElementById("count-completada").textContent=
+    tasks.filter(task => task.status === "completada").length;
+}
