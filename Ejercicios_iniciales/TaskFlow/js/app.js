@@ -56,11 +56,11 @@ function showMessage(text, type) {
 }
 
 //conectamos js con html en la parte de las tarjetas
-const taskList = document.getElementById("task-list");
+const dropZones = document.querySelectorAll(".drop-zone");
 
 //esta funcion limpiara la lista y crea las tareas en el DOM
 function renderTasks () {
-    taskList.innerHTML = "";
+    dropZones.forEach(zone => zone.innerHTML = "");
 
     let filteredTasks =tasks;
 
@@ -78,7 +78,18 @@ function renderTasks () {
 
     filteredTasks.forEach(task => {
         const taskDiv = document.createElement("div");
-        taskDiv.classList.add("task", task.priority);
+        taskDiv.classList.add("task", task.status, task.priority);
+
+        taskDiv.setAttribute("draggable", "true");
+
+        taskDiv.addEventListener("dragstart", () => {
+            taskDiv.classList.add("dragging");
+            taskDiv.dataset.id=task.id;
+        });
+        taskDiv.addEventListener("dragend", () => {
+            taskDiv.classList.remove("dragging");
+        });
+
 
         if (task.status === "completada") {
             taskDiv.classList.add("opacity-50");
@@ -107,7 +118,6 @@ function renderTasks () {
 
         // Cambio de estado
         const statusSelect = taskDiv.querySelector("select");
-
         statusSelect.addEventListener("change", (e) => {
             task.status=e.target.value;
             saveTasks();
@@ -120,8 +130,12 @@ function renderTasks () {
         deleteBtn.addEventListener("click", () => {
             deleteTask(task.id);
         });
-
-        taskList.appendChild(taskDiv);
+        const zone = document.querySelector(
+            `.drop-zone[data-status="${task.status}"]`
+        );
+        if (zone) {
+            zone.appendChild(taskDiv);
+        }
     });
 }
 
@@ -209,3 +223,65 @@ document.getElementById("count-proceso").textContent=
 document.getElementById("count-completada").textContent=
     tasks.filter(task => task.status === "completada").length;
 }
+
+dropZones.forEach(zone => {
+    //permitir que se pueda soltar
+    zone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        zone.classList.add("drag-over");
+    });
+
+    //quitar efecto visual al salir
+    zone.addEventListener("dragleave", () => {
+        zone.classList.remove("drag-over");
+    });
+
+    //cuando se suelta la tarea
+    zone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        zone.classList.remove("drag-over");
+
+        //obtener tarea que se arrastro
+        const draggedTask = document.querySelector(".dragging");
+        if (!draggedTask) return;
+
+        const taskId = draggedTask.dataset.id;
+        const newStatus = zone.dataset.status;
+
+        //buscar tarea en el array
+        const task= tasks.find(t => t.id == taskId);
+
+        if (task) {
+            task.status = newStatus;
+            saveTasks();
+            renderTasks();
+            updateCounters();
+        }
+    });
+});
+
+const themeToggle = document.getElementById("theme-toggle");
+const body = document.body;
+
+//cargar tema guardado
+const savedTheme =localStorage.getItem("theme");
+
+if (savedTheme === "dark"){
+    body.setAttribute("data-theme", "dark");
+themeToggle.textContent="☀️ Modo claro";
+}
+
+//cambiar tema
+themeToggle.addEventListener("click", () => {
+    const isDark = body.getAttribute("data-theme") === "dark";
+
+    if (isDark) {
+        body.removeAttribute("data-theme");
+        localStorage.setItem("theme", "light");
+        themeToggle.textContent = "🌙 Modo oscuro"
+    } else {
+        body.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+        themeToggle.textContent = "☀️ Modo claro"
+    }
+});

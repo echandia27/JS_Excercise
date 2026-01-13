@@ -10,6 +10,11 @@
 <body>
     <div class="container mt-5">
     <h1 class="text-center mb-4">TaskFlow</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <button id="theme-toggle" class="btn btn-outline-dark btn-sm">
+            🌙 Modo oscuro
+        </button>
+    </div>
 
     <div class="mb-4 d-flex gap-2 flex-wrap">
         <button class="btn btn-outline-primary" data-filter="all">
@@ -79,7 +84,23 @@
         <div id="message"></div>
 
         <!-- Lista de tareas -->
-        <div id="task-list"></div>
+        <div id="board" class="row mb-4">
+
+            <div class="col-md-4">
+                <h5 class="text-center">Pendiente</h5>
+                <div class="drop-zone" data-status="pendiente"></div>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="text-center">En proceso</h5>
+                <div class="drop-zone" data-status="proceso"></div>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="text-center">Completada</h5>
+                <div class="drop-zone" data-status="completada"></div>
+            </div>
+        </div>
     </div>
 
     <script src="js/app.js"></script>
