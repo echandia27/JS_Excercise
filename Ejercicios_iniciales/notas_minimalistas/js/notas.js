@@ -12,7 +12,7 @@ const searchInput = document.getElementById("search");
 //eventos
 
 form.addEventListener("submit", createNote);
-categoryFilter.addEventListener("change", filterNotes);
+categoryFilter.addEventListener("change", filteredNotes);
 
 //crear nota
 
