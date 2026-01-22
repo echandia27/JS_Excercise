@@ -11,6 +11,12 @@ loginBtn.addEventListener("click", () => {
     }
 
     localStorage.setItem("isLogged", "true");
+
+    if (username === "admin") {
+        localStorage.setItem("role", "admin");
+    } else {
+        localStorage.setItem("role", "user");
+    }
     
     window.location.href = "dashboard.html";
 });
