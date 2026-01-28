@@ -9,7 +9,32 @@
 <body class="bg-gray-100 p-6">
     <div class="max-w-2xl mx-auto bg-white shadow-md rounded p-4">
         <h1>CRUD con JSON Server</h1>
-        <div id="app"></div>
+        <form id="userForm" class="mb-4">
+            <input 
+                type="text" 
+                id="name" 
+                placeholder="Nombre" 
+                class="border p-2 mr-2 rounded"
+                required
+            >
+            <input 
+                type="email" 
+                id="email" 
+                placeholder="Email" 
+                class="border p-2 mr-2 rounded"
+                required
+            >
+            <button 
+                type="submit" 
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+                Agregar
+            </button>
+        </form>
+
+        <div id="app">
+            
+        </div>
     </div>
     <script src="app.js"></script>
 </body>
